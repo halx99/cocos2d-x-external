@@ -81,8 +81,8 @@ static lua_CFunction ll_sym (lua_State *L, void *lib, const char *sym) {
 /* }====================================================== */
 
 
-
-#elif defined(LUA_DL_DLL)
+// Windows Universal app LUA-Support
+#elif defined(LUA_DL_DLL) && !defined(WINAPI_FAMILY_APP) || WINAPI_FAMILY_APP == WINAPI_FAMILY_DESKTOP_APP
 /*
 ** {======================================================================
 ** This is an implementation of loadlib for Windows using native functions.
