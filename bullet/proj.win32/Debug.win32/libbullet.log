@@ -1,0 +1,191 @@
+﻿  btAxisSweep3.cpp
+  btBroadphaseProxy.cpp
+  btCollisionAlgorithm.cpp
+  btDbvt.cpp
+  btDbvtBroadphase.cpp
+  btDispatcher.cpp
+  btMultiSapBroadphase.cpp
+  btOverlappingPairCache.cpp
+  btQuantizedBvh.cpp
+  btSimpleBroadphase.cpp
+  SphereTriangleDetector.cpp
+  btActivatingCollisionAlgorithm.cpp
+  btBox2dBox2dCollisionAlgorithm.cpp
+  btBoxBoxCollisionAlgorithm.cpp
+  btBoxBoxDetector.cpp
+  btCollisionDispatcher.cpp
+  btCollisionObject.cpp
+  btCollisionWorld.cpp
+  btCompoundCollisionAlgorithm.cpp
+  btCompoundCompoundCollisionAlgorithm.cpp
+  btConvex2dConvex2dAlgorithm.cpp
+  btConvexConcaveCollisionAlgorithm.cpp
+  btConvexConvexAlgorithm.cpp
+  btConvexPlaneCollisionAlgorithm.cpp
+  btDefaultCollisionConfiguration.cpp
+  btEmptyCollisionAlgorithm.cpp
+  btGhostObject.cpp
+  btHashedSimplePairCache.cpp
+  btInternalEdgeUtility.cpp
+  btManifoldResult.cpp
+  btSimulationIslandManager.cpp
+  btSphereBoxCollisionAlgorithm.cpp
+  btSphereSphereCollisionAlgorithm.cpp
+  btSphereTriangleCollisionAlgorithm.cpp
+  btUnionFind.cpp
+  btBox2dShape.cpp
+  btBoxShape.cpp
+  btBvhTriangleMeshShape.cpp
+  btCapsuleShape.cpp
+  btCollisionShape.cpp
+  btCompoundShape.cpp
+  btConcaveShape.cpp
+  btConeShape.cpp
+  btConvex2dShape.cpp
+  btConvexHullShape.cpp
+  btConvexInternalShape.cpp
+  btConvexPointCloudShape.cpp
+  btConvexPolyhedron.cpp
+  btConvexShape.cpp
+  btConvexTriangleMeshShape.cpp
+  btCylinderShape.cpp
+  btEmptyShape.cpp
+  btHeightfieldTerrainShape.cpp
+  btMinkowskiSumShape.cpp
+  btMultiSphereShape.cpp
+  btMultimaterialTriangleMeshShape.cpp
+  btOptimizedBvh.cpp
+  btPolyhedralConvexShape.cpp
+  btScaledBvhTriangleMeshShape.cpp
+  btShapeHull.cpp
+  btSphereShape.cpp
+  btStaticPlaneShape.cpp
+  btStridingMeshInterface.cpp
+  btTetrahedronShape.cpp
+  btTriangleBuffer.cpp
+  btTriangleCallback.cpp
+  btTriangleIndexVertexArray.cpp
+  btTriangleIndexVertexMaterialArray.cpp
+  btTriangleMesh.cpp
+  btTriangleMeshShape.cpp
+  btUniformScalingShape.cpp
+  btContactProcessing.cpp
+  btGImpactBvh.cpp
+  btGImpactCollisionAlgorithm.cpp
+  btGImpactQuantizedBvh.cpp
+  btGImpactShape.cpp
+  btGenericPoolAllocator.cpp
+  btTriangleShapeEx.cpp
+  gim_box_set.cpp
+  gim_contact.cpp
+  gim_memory.cpp
+  gim_tri_collision.cpp
+  btContinuousConvexCollision.cpp
+  btConvexCast.cpp
+  btGjkConvexCast.cpp
+  btGjkEpa2.cpp
+  btGjkEpaPenetrationDepthSolver.cpp
+  btGjkPairDetector.cpp
+  btMinkowskiPenetrationDepthSolver.cpp
+  btPersistentManifold.cpp
+  btPolyhedralContactClipping.cpp
+  btRaycastCallback.cpp
+  btSubSimplexConvexCast.cpp
+  btVoronoiSimplexSolver.cpp
+  btKinematicCharacterController.cpp
+  btConeTwistConstraint.cpp
+  btContactConstraint.cpp
+  btFixedConstraint.cpp
+  btGearConstraint.cpp
+  btGeneric6DofConstraint.cpp
+  btGeneric6DofSpringConstraint.cpp
+  btHinge2Constraint.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btcontactconstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored. (compiling source file ..\BulletDynamics\ConstraintSolver\btContactConstraint.cpp)
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\character\btkinematiccharactercontroller.cpp(137): warning C4305: '=': truncation from 'double' to 'btScalar'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\character\btkinematiccharactercontroller.cpp(148): warning C4305: '=': truncation from 'double' to 'btScalar'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btconetwistconstraint.cpp(866): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btconetwistconstraint.cpp(911): warning C4244: '=': conversion from 'double' to 'float', possible loss of data
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btconetwistconstraint.cpp(971): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btconetwistconstraint.cpp(973): warning C4244: '=': conversion from 'double' to 'btScalar', possible loss of data
+  btHingeConstraint.cpp
+  btPoint2PointConstraint.cpp
+  btSequentialImpulseConstraintSolver.cpp
+  btSliderConstraint.cpp
+  btSolve2LinearConstraint.cpp
+  btTypedConstraint.cpp
+  btUniversalConstraint.cpp
+  Bullet-C-API.cpp
+  btDiscreteDynamicsWorld.cpp
+  btRigidBody.cpp
+  btSimpleDynamicsWorld.cpp
+  btMultiBody.cpp
+  btMultiBodyConstraint.cpp
+  btMultiBodyConstraintSolver.cpp
+  btMultiBodyDynamicsWorld.cpp
+  btMultiBodyJointLimitConstraint.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btcontactconstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored. (compiling source file ..\BulletDynamics\Dynamics\btDiscreteDynamicsWorld.cpp)
+  btMultiBodyJointMotor.cpp
+  btMultiBodyPoint2Point.cpp
+  btDantzigLCP.cpp
+  btMLCPSolver.cpp
+  btRaycastVehicle.cpp
+  btWheelInfo.cpp
+  PosixThreadSupport.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\mlcpsolvers\btdantziglcp.cpp(1567): warning C4473: 'printf' : not enough arguments passed for format string
+  d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\mlcpsolvers\btdantziglcp.cpp(1567): note: placeholders and their parameters expect 2 variadic arguments, but 1 were provided
+  d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\mlcpsolvers\btdantziglcp.cpp(1567): note: the missing variadic argument 2 is required by format string '% s'
+  SequentialThreadSupport.cpp
+  SpuCollisionObjectWrapper.cpp
+  SpuCollisionTaskProcess.cpp
+  SpuContactManifoldCollisionAlgorithm.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletdynamics\constraintsolver\btcontactconstraint.h(25): warning C4359: 'btContactConstraint': Alignment specifier is less than actual alignment (128), and will be ignored. (compiling source file ..\BulletDynamics\Vehicle\btRaycastVehicle.cpp)
+  SpuFakeDma.cpp
+  SpuGatheringCollisionDispatcher.cpp
+  SpuCollisionShapes.cpp
+  SpuContactResult.cpp
+  SpuGatheringCollisionTask.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\sequentialthreadsupport.cpp(180): warning C4316: 'btDummyCriticalSection': object allocated on the heap may not be aligned 16
+  SpuMinkowskiPenetrationDepthSolver.cpp
+  boxBoxDistance.cpp
+  SpuSampleTaskProcess.cpp
+  SpuSampleTask.cpp
+  Win32ThreadSupport.cpp
+  btGpu3DGridBroadphase.cpp
+  btParallelConstraintSolver.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\spunarrowphasecollisiontask\spugatheringcollisiontask.cpp(130): warning C4359: 'CollisionTask_LocalStoreMemory': Alignment specifier is less than actual alignment (128), and will be ignored.
+  btThreadSupportInterface.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\spusampletask\spusampletask.cpp(226): warning C4316: 'SampleTask_LocalStoreMemory': object allocated on the heap may not be aligned 16
+  btAlignedAllocator.cpp
+  btConvexHull.cpp
+  btConvexHullComputer.cpp
+  btGeometryUtil.cpp
+  btPolarDecomposition.cpp
+  btQuickprof.cpp
+  btVector3.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\btparallelconstraintsolver.cpp(1141): warning C4316: 'btConstraintSolverIO': object allocated on the heap may not be aligned 16
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\btparallelconstraintsolver.cpp(1484): warning C4305: 'initializing': truncation from 'double' to 'float'
+  MiniCL.cpp
+  MiniCLTaskScheduler.cpp
+  MiniCLTask.cpp
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\win32threadsupport.cpp(253): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\bulletmultithreaded\win32threadsupport.cpp(262): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(83): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(96): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(129): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(194): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(207): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(166): warning C4101: 'workitem_size': unreferenced local variable
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(547): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\string.h(129): note: see declaration of 'strcpy'
+d:\develop\gamedev\engines\cocos2d-x\external\bullet\minicl\minicl.cpp(640): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  c:\program files (x86)\windows kits\10\include\10.0.14393.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+PosixThreadSupport.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+btBroadphaseProxy.obj : warning LNK4221: This object file does not define any previously undefined public symbols, so it will not be used by any link operation that consumes this library
+  libbullet.vcxproj -> D:\develop\gamedev\engines\cocos2d-x\build\Debug.win32\libbullet.lib
