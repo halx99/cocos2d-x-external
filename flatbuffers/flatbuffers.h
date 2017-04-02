@@ -88,7 +88,7 @@
 #endif // !defined(FLATBUFFERS_LITTLEENDIAN)
 
 #define FLATBUFFERS_VERSION_MAJOR 1
-#define FLATBUFFERS_VERSION_MINOR 5
+#define FLATBUFFERS_VERSION_MINOR 6
 #define FLATBUFFERS_VERSION_REVISION 0
 #define FLATBUFFERS_STRING_EXPAND(X) #X
 #define FLATBUFFERS_STRING(X) FLATBUFFERS_STRING_EXPAND(X)
@@ -496,12 +496,11 @@ class vector_downward {
  public:
   explicit vector_downward(size_t initial_size,
                            const simple_allocator &allocator)
-    : reserved_(initial_size),
+    : reserved_((initial_size + sizeof(largest_scalar_t) - 1) &
+        ~(sizeof(largest_scalar_t) - 1)),
       buf_(allocator.allocate(reserved_)),
       cur_(buf_ + reserved_),
-      allocator_(allocator) {
-    assert((initial_size & (sizeof(largest_scalar_t) - 1)) == 0);
-  }
+      allocator_(allocator) {}
 
   ~vector_downward() {
     if (buf_)
@@ -539,17 +538,7 @@ class vector_downward {
 
   uint8_t *make_space(size_t len) {
     if (len > static_cast<size_t>(cur_ - buf_)) {
-      auto old_size = size();
-      auto largest_align = AlignOf<largest_scalar_t>();
-      reserved_ += (std::max)(len, growth_policy(reserved_));
-      // Round up to avoid undefined behavior from unaligned loads and stores.
-      reserved_ = (reserved_ + (largest_align - 1)) & ~(largest_align - 1);
-      auto new_buf = allocator_.allocate(reserved_);
-      auto new_cur = new_buf + reserved_ - old_size;
-      memcpy(new_cur, cur_, old_size);
-      cur_ = new_cur;
-      allocator_.deallocate(buf_);
-      buf_ = new_buf;
+      reallocate(len);
     }
     cur_ -= len;
     // Beyond this, signed offsets may not have enough range:
@@ -570,16 +559,28 @@ class vector_downward {
 
   uint8_t *data_at(size_t offset) const { return buf_ + reserved_ - offset; }
 
-  // push() & fill() are most frequently called with small byte counts (<= 4),
-  // which is why we're using loops rather than calling memcpy/memset.
   void push(const uint8_t *bytes, size_t num) {
     auto dest = make_space(num);
-    for (size_t i = 0; i < num; i++) dest[i] = bytes[i];
+    memcpy(dest, bytes, num);
   }
 
+  // Specialized version of push() that avoids memcpy call for small data.
+  template<typename T> void push_small(T little_endian_t) {
+    auto dest = make_space(sizeof(T));
+    *reinterpret_cast<T *>(dest) = little_endian_t;
+  }
+
+  // fill() is most frequently called with small byte counts (<= 4),
+  // which is why we're using loops rather than calling memset.
   void fill(size_t zero_pad_bytes) {
     auto dest = make_space(zero_pad_bytes);
     for (size_t i = 0; i < zero_pad_bytes; i++) dest[i] = 0;
+  }
+
+  // Version for when we know the size is larger.
+  void fill_big(size_t zero_pad_bytes) {
+    auto dest = make_space(zero_pad_bytes);
+    memset(dest, 0, zero_pad_bytes);
   }
 
   void pop(size_t bytes_to_remove) { cur_ += bytes_to_remove; }
@@ -593,6 +594,20 @@ class vector_downward {
   uint8_t *buf_;
   uint8_t *cur_;  // Points at location between empty (below) and used (above).
   const simple_allocator &allocator_;
+
+  void reallocate(size_t len) {
+    auto old_size = size();
+    auto largest_align = AlignOf<largest_scalar_t>();
+    reserved_ += (std::max)(len, growth_policy(reserved_));
+    // Round up to avoid undefined behavior from unaligned loads and stores.
+    reserved_ = (reserved_ + (largest_align - 1)) & ~(largest_align - 1);
+    auto new_buf = allocator_.allocate(reserved_);
+    auto new_cur = new_buf + reserved_ - old_size;
+    memcpy(new_cur, cur_, old_size);
+    cur_ = new_cur;
+    allocator_.deallocate(buf_);
+    buf_ = new_buf;
+  }
 };
 
 // Converts a Field ID to a virtual table offset.
@@ -643,7 +658,7 @@ FLATBUFFERS_FINAL_CLASS
                              const simple_allocator *allocator = nullptr)
       : buf_(initial_size, allocator ? *allocator : default_allocator),
         nested(false), finished(false), minalign_(1), force_defaults_(false),
-        string_pool(nullptr) {
+        dedup_vtables_(true), string_pool(nullptr) {
     offsetbuf_.reserve(16);  // Avoid first few reallocs.
     vtables_.reserve(16);
     EndianCheck();
@@ -720,6 +735,10 @@ FLATBUFFERS_FINAL_CLASS
   /// @param[in] bool fd When set to `true`, always serializes default values.
   void ForceDefaults(bool fd) { force_defaults_ = fd; }
 
+  /// @brief By default vtables are deduped in order to save space.
+  /// @param[in] bool dedup When set to `true`, dedup vtables.
+  void DedupVtables(bool dedup) { dedup_vtables_ = dedup; }
+
   /// @cond FLATBUFFERS_INTERNAL
   void Pad(size_t num_bytes) { buf_.fill(num_bytes); }
 
@@ -754,7 +773,7 @@ FLATBUFFERS_FINAL_CLASS
     AssertScalarT<T>();
     T litle_endian_element = EndianScalar(element);
     Align(sizeof(T));
-    PushBytes(reinterpret_cast<uint8_t *>(&litle_endian_element), sizeof(T));
+    buf_.push_small(litle_endian_element);
     return GetSize();
   }
 
@@ -786,7 +805,7 @@ FLATBUFFERS_FINAL_CLASS
   template<typename T> void AddStruct(voffset_t field, const T *structptr) {
     if (!structptr) return;  // Default, don't store.
     Align(AlignOf<T>());
-    PushBytes(reinterpret_cast<const uint8_t *>(structptr), sizeof(T));
+    buf_.push_small(*structptr);
     TrackField(field, GetSize());
   }
 
@@ -837,7 +856,7 @@ FLATBUFFERS_FINAL_CLASS
     // Write a vtable, which consists entirely of voffset_t elements.
     // It starts with the number of offsets, followed by a type id, followed
     // by the offsets themselves. In reverse:
-    buf_.fill(numfields * sizeof(voffset_t));
+    buf_.fill_big(numfields * sizeof(voffset_t));
     auto table_object_size = vtableoffsetloc - start;
     assert(table_object_size < 0x10000);  // Vtable use 16bit offsets.
     PushElement<voffset_t>(static_cast<voffset_t>(table_object_size));
@@ -857,13 +876,15 @@ FLATBUFFERS_FINAL_CLASS
     auto vt_use = GetSize();
     // See if we already have generated a vtable with this exact same
     // layout before. If so, make it point to the old one, remove this one.
-    for (auto it = vtables_.begin(); it != vtables_.end(); ++it) {
-      auto vt2 = reinterpret_cast<voffset_t *>(buf_.data_at(*it));
-      auto vt2_size = *vt2;
-      if (vt1_size != vt2_size || memcmp(vt2, vt1, vt1_size)) continue;
-      vt_use = *it;
-      buf_.pop(GetSize() - vtableoffsetloc);
-      break;
+    if (dedup_vtables_) {
+      for (auto it = vtables_.begin(); it != vtables_.end(); ++it) {
+        auto vt2 = reinterpret_cast<voffset_t *>(buf_.data_at(*it));
+        auto vt2_size = *vt2;
+        if (vt1_size != vt2_size || memcmp(vt2, vt1, vt1_size)) continue;
+        vt_use = *it;
+        buf_.pop(GetSize() - vtableoffsetloc);
+        break;
+      }
     }
     // If this is a new vtable, remember it.
     if (vt_use == GetSize()) {
@@ -1106,6 +1127,27 @@ FLATBUFFERS_FINAL_CLASS
     return Offset<Vector<const T *>>(EndVector(len));
   }
 
+  #ifndef FLATBUFFERS_CPP98_STL
+  /// @brief Serialize an array of structs into a FlatBuffer `vector`.
+  /// @tparam T The data type of the struct array elements.
+  /// @param[in] f A function that takes the current iteration 0..vector_size-1
+  /// and a pointer to the struct that must be filled.
+  /// @return Returns a typed `Offset` into the serialized data indicating
+  /// where the vector is stored.
+  /// This is mostly useful when flatbuffers are generated with mutation
+  /// accessors.
+  template<typename T> Offset<Vector<const T *>> CreateVectorOfStructs(
+      size_t vector_size, const std::function<void(size_t i, T *)> &filler) {
+    StartVector(vector_size * sizeof(T) / AlignOf<T>(), AlignOf<T>());
+    T *structs = reinterpret_cast<T *>(buf_.make_space(vector_size * sizeof(T)));
+    for (size_t i = 0; i < vector_size; i++) {
+      filler(i, structs);
+      structs++;
+    }
+    return Offset<Vector<const T *>>(EndVector(vector_size));
+  }
+  #endif
+
   /// @brief Serialize a `std::vector` of structs into a FlatBuffer `vector`.
   /// @tparam T The data type of the `std::vector` struct elements.
   /// @param[in]] v A const reference to the `std::vector` of structs to
@@ -1229,7 +1271,7 @@ FLATBUFFERS_FINAL_CLASS
              minalign_);
     if (file_identifier) {
       assert(strlen(file_identifier) == kFileIdentifierLength);
-      buf_.push(reinterpret_cast<const uint8_t *>(file_identifier),
+      PushBytes(reinterpret_cast<const uint8_t *>(file_identifier),
                 kFileIdentifierLength);
     }
     PushElement(ReferTo(root));  // Location of root.
@@ -1262,6 +1304,8 @@ FLATBUFFERS_FINAL_CLASS
   size_t minalign_;
 
   bool force_defaults_;  // Serialize values equal to their defaults anyway.
+
+  bool dedup_vtables_;
 
   struct StringOffsetCompare {
     StringOffsetCompare(const vector_downward &buf) : buf_(&buf) {}
